@@ -1,0 +1,157 @@
+<html>
+    <head>
+        <title>INFO5100 Project 1</title>
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
+    </head>
+    <style>
+        .gridlines line {
+            stroke: #bbb;
+        }
+
+        .gridlines .domain {
+            stroke: none;
+        }
+    </style>
+    <body>
+        <h3>Group Member:Yutong Fu (yf363), Sijie Zhang (sz632), </h3>
+        <p>
+
+        </p>
+
+        <p>
+            <svg id="scatterplot" height="500" width="600" style="margin-top:50px">
+                <text id="label" x="600" y="45"  text-anchor="end" alignment-baseline="hanging" style="font-size:14px">
+                </text> 
+              </svg>
+              <script id="notes1">
+                    const svg=d3.select("svg#scatterplot");
+                    const width = svg.attr("width");
+                    const height = svg.attr("height");
+                    const margin = {top: 10, right: 120, bottom: 40, left: 60};
+                    const chartWidth = width - margin.left - margin.right;
+                    const chartHeight = height - margin.top - margin.bottom;
+                    let annotations = svg.append("g")
+                                        .attr("id","annotations");
+                    let chartArea = svg.append("g")
+                                        .attr("id","points")
+                                        .attr("transform","translate("+(margin.left)+","+(margin.top)+")");
+                    d3.select("#label").raise();
+
+                    d3.json("./data.json").then(data =>{
+                    console.log(data);
+                    let minYear = 2015;
+                    let maxYear = 2019;
+                    data.forEach((d,i)=>{
+                        d['price']= Number(d['Price']);
+                        d['UserRating']= Number(d['User Rating']);
+                        d['reviews']= Number(d['Reviews']);
+                        d['year']= Number(d['Year'])
+                    });
+
+                    // Filter
+                    data = data.filter((d)=>{ 
+                    return d['price'] !== "NaN" && d['Year'] >= minYear && d['Year'] <= maxYear;
+                    });
+                    console.log(data.length);
+
+                    // Calculate frequency of data with same year and price, and store the value as count
+                    const combinedItems = (data = []) => {
+                        const res = data.reduce((acc, obj) => {
+                            let found = false;
+                            for (let i = 0; i < acc.length; i++) {
+                                if (acc[i].year === obj.year && acc[i].price === obj.price) {
+                                    found = true;
+                                    acc[i].count++;
+                                }
+                            }
+                            if (!found) {
+                                obj.count = 1;
+                                acc.push(obj);
+                            }
+                            return acc;
+                        }, []);
+                        return res;
+                    };
+                    let data_combined = combinedItems(data);
+                    console.log(data_combined);
+
+                    // Extent and Scale
+                    const yearExtent = d3.extent(data, d => d['year']);
+                    const priceExtent = d3.extent(data, d => d['price']);
+                    const countExtent = d3.extent(data_combined, d => d['count']);
+                    //const priceMax = d3.max(data, d => d['price'] )
+                    console.log(countExtent);
+                    const yearScale = d3.scaleLinear().domain(yearExtent).range([0, chartWidth]);
+                    const priceScale = d3.scaleLinear().domain(priceExtent).range([chartHeight, 0]);
+                    //const priceScale = d3.scaleLog().clamp(true).domain([0.1, priceMax]).range([chartHeight, 0]);
+
+                    // using count as the radius of the circles, and decides color based on this
+                    const countScale = d3.scaleLinear().domain(countExtent).range([5, 15]);
+                    //const colorScale = d3.scaleOrdinal(d3.schemeTableau10);
+                    //const colorScale = d3.scaleSequential().domain(countExtent).interpolator(d3.interpolateYlOrRd);
+                    const colorScale = d3.scaleSequential(function(t) {
+                        return d3.interpolateGnBu((t/2 + 0.15)) }).domain(countExtent);
+
+                    // draw axes
+                    let leftAxis = d3.axisLeft(priceScale).ticks(10).tickFormat(d3.format("$"));
+                    annotations.append("g")
+                        .attr("class", "y axis")
+                        .attr("transform","translate("+(margin.left-20)+","+(margin.top)+")")
+                        .call(leftAxis);
+                    let bottomAxis = d3.axisBottom(yearScale).ticks(5).tickFormat(d3.format("d"));
+                    annotations.append("g")
+                        .attr("class", "x axis")
+                        .attr("transform","translate("+margin.left+","+(chartHeight+margin.top+10)+")")
+                        .call(bottomAxis);
+
+                    // draw gridlines
+                    let leftGridlines = d3.axisLeft(priceScale).ticks(10)
+                        .tickSize(-chartWidth-10)
+                        .tickFormat("");
+                    annotations.append("g").attr("class", "y gridlines")
+                        .attr("transform","translate("+ (margin.left-20) +","+ margin.top +")")
+                        .call(leftGridlines);
+
+                    // draw a legend
+                    var categories = ["1", "2", "3", "4", "5", "6", "7", "8"];
+
+                    var ordinal = d3.scaleOrdinal()
+                        .domain(categories)
+                        .range(categories.map((val, i) =>
+                            d3.interpolateGnBu((i / (categories.length - 1)) / 2 + 0.25)
+                        ));
+
+                    var legendOrdinal = d3.legendColor()
+                        .scale(ordinal);
+
+                    annotations.append("g").attr("class", "legendOrdinal")
+                        .attr("transform","translate("+ (chartWidth + 110) +","+ (margin.top + 70) +")")
+                        .call(legendOrdinal);
+
+                    d3.select("#label").text("Number of Books");
+
+                    // draw circles
+                    data_combined.forEach( (d, i) => {
+                        let circle = chartArea.append("circle")
+                            .attr("cx", yearScale(d['year']))
+                            .attr("cy", priceScale(d['price']))
+                            .attr("r", countScale(d['count']))
+                            .attr("opacity", 0.6)
+                            .attr("i", i)
+                            //.attr("fill", "violet");
+                            .attr("fill", colorScale(countScale(d['count'])));
+                    });
+
+                })
+              </script>
+      
+
+        </p>
+        <p>
+
+        </p>
+
+    </body>
+</html>
