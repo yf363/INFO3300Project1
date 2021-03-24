@@ -1,0 +1,131 @@
+<html>
+    <head>
+        <title>INFO5100 Project 1</title>
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+    </head>
+    <body>
+        <h3>Group Member:Yutong Fu, yf363</h3>
+        <p>
+
+        </p>
+
+        
+        <p>
+            <svg id="scatterplot" height="500" width="500" style="margin-top:50px">
+                <text id="label" x="480" y="15"  text-anchor="end" alignment-baseline="hanging">
+      
+                </text> 
+              </svg>    
+
+              <script id="notes1">
+                    const svg=d3.select("svg#scatterplot");
+
+                    const width = svg.attr("width");
+                    const height = svg.attr("height");
+                    const margin = {top: 10, right: 10, bottom: 40, left: 60};
+                    const chartWidth = width - margin.left - margin.right;
+                    const chartHeight = height - margin.top - margin.bottom;
+                    let annotations = svg.append("g")
+                                        .attr("id","annotations");
+
+                    let chartArea = svg.append("g")
+                                        .attr("id","points")
+                                        .attr("transform","translate("+(margin.left+20)+","+(margin.top+20)+")");
+
+                    d3.select("#label").raise();
+
+                    d3.json("./data.json").then(data =>{
+                    console.log(data);
+
+                    data.forEach((d,i)=>{
+
+                    d['price']= Number(d['Price'])
+                    d['UserRating']= Number(d['User Rating'])
+                    d['reviews']= Number(d['Reviews'])
+                    });
+
+                    data = data.filter((d)=>{ 
+                    return d['price'] !="NaN"&&d['Year'] ==="2016"||d['Year'] ==="2017"||d['Year'] ==="2018"||d['Year'] ==="2019";
+                    });
+                    console.log(data.length);
+                    
+                    
+                    const yearExtent = d3.extent(data, d => d['Year']);
+                    const priceExtent = d3.extent(data, d => d['price']);
+                    console.log(yearExtent);
+                    console.log(priceExtent);
+                
+                    
+                  })
+              </script>
+      
+
+        </p>
+                <svg id="barchart" height="500" width="800" style="margin-top:50px" >
+                </svg>
+                <!-- <div id="button-bar"></div> -->
+
+                <script id="notes2">
+                    let svg1 = d3.select("svg#barchart");
+                    const width2 = svg.attr("width");
+                    const height2 = svg.attr("height");
+                    const margin2 = {top: 10, right: 10, bottom: 50, left: 50};
+                    const chartWidth2 = width - margin.left - margin.right;
+                    const chartHeight2 = height - margin.top - margin.bottom;
+
+                    let annotations2 = svg.append("g").attr("id","annotations");
+                    let chartArea2 = svg.append("g").attr("id","points")
+                                    .attr("transform",`translate(${margin.left},${margin.top})`);
+                    
+                    
+                    
+                    d3.json("./data.json", d3.autoType).then(data =>{
+                    console.log(data);
+             
+                    data.forEach((d,i)=>{
+
+                    d['price']= Number(d['Price'])
+                    d['UserRating']= Number(d['User Rating'])
+                    d['reviews']= Number(d['Reviews'])
+                    });
+
+                    data = data.filter((d)=>{ 
+                    return d['price'] !="NaN"&&d['Year'] ==="2016"||d['Year'] ==="2017"||d['Year'] ==="2018"||d['Year'] ==="2019";
+                    });
+                    console.log(data.length);
+
+
+                    const UserRatingExtent = d3.extent(data, d => d['UserRating']);
+                    const priceExtent = d3.extent(data, d => d['price']);
+                    console.log(UserRatingExtent);
+                    console.log(priceExtent);
+
+                     })
+
+
+                </script>
+
+
+
+        <p>
+
+
+        </p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </body>
+</html>
