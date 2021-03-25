@@ -61,49 +61,124 @@
       
 
         </p>
-                <svg id="barchart" height="500" width="800" style="margin-top:50px" >
-                </svg>
-                <!-- <div id="button-bar"></div> -->
+        <svg id="barchart" height="500" width="800" style="margin-top:50px" >
+        </svg>
+        <!-- <div id="button-bar"></div> -->
 
-                <script id="notes2">
-                    let svg1 = d3.select("svg#barchart");
-                    const width2 = svg.attr("width");
-                    const height2 = svg.attr("height");
-                    const margin2 = {top: 10, right: 10, bottom: 50, left: 50};
-                    const chartWidth2 = width - margin.left - margin.right;
-                    const chartHeight2 = height - margin.top - margin.bottom;
+        <script id="notes2">
+            let mysvg = d3.select("svg#barchart");
+            const width2 = svg.attr("width");
+            const height2 = svg.attr("height");
+            const margin2= {top: 10, right: 10, bottom: 50, left: 50};
+            const chartWidth2 = width - margin.left - margin.right;
+            const chartHeight2 = height - margin.top - margin.bottom;
 
-                    let annotations2 = svg.append("g").attr("id","annotations");
-                    let chartArea2 = svg.append("g").attr("id","points")
-                                    .attr("transform",`translate(${margin.left},${margin.top})`);
-                    
-                    
-                    
-                    d3.json("./data.json", d3.autoType).then(data =>{
-                    console.log(data);
-             
-                    data.forEach((d,i)=>{
+            let annotations2 = mysvg.append("g").attr("id","annotations");
+            let chartArea2 = mysvg.append("g").attr("id","points")
+                                              .attr("transform",`translate(${margin.left},${margin.top})`);
+            
+            
+            
+            d3.json("./data.json", d3.autoType).then(data =>{
+            console.log(data);
+            let minYear = 2015;
+            let maxYear = 2019;
+            data.forEach((d,i)=>{
+                
+            d['price']= Number(d['Price'])
+            d['UserRating']= Number(d['User Rating'])
+            d['reviews']= Number(d['Reviews'])
+            });
 
-                    d['price']= Number(d['Price'])
-                    d['UserRating']= Number(d['User Rating'])
-                    d['reviews']= Number(d['Reviews'])
-                    });
+            // Filter
+            data = data.filter((d)=>{ 
+            return d['price'] !="NaN"&& d['Year'] >= minYear && d['Year'] <= maxYear;;
+            });
+            console.log(data.length);
 
-                    data = data.filter((d)=>{ 
-                    return d['price'] !="NaN"&&d['Year'] ==="2016"||d['Year'] ==="2017"||d['Year'] ==="2018"||d['Year'] ==="2019";
-                    });
-                    console.log(data.length);
+            // calculate average price for each user rating level
+            let data_ratingGroup = Object.entries(data
+                    .reduce((acc, x) => {
+                        let arr = acc[x.UserRating] || [];
+                        arr.push(x.price);
+                        acc[x.UserRating] = arr;
+                        return acc;
+                    }, {}))
+                    .map((x)=> {
+                        let UserRating= x[0];
+                        let price = x[1];
+                        let sum = price.reduce((a, b) => a + b, 0);
+                        let avg = (sum / price.length) || 0;
+                        return { "UserRating": UserRating, "price": avg };
+            });
+            
+            console.log(data_ratingGroup);
+            
+
+            // Extent and Scale
+            const UserRatingExtent = d3.extent(data, d => d['UserRating']);
+            const priceExtent = d3.extent(data, d => d['price']);
+            const averagePExtent = d3.extent(data_ratingGroup, d => d['average']);
+
+            console.log(UserRatingExtent);
+            console.log(priceExtent);
+            
+
+          
+            const UserRatingScale = d3.scaleBand().domain(UserRatingExtent).range([0,chartWidth2]);
+            const priceScale = d3.scaleBand().domain(priceExtent).range([chartHeight2,0])
+                                          .padding(0.05);
+            const averagePScale = d3.scaleLinear().domain(averagePExtent).range([chartHeight2,0]);
+            
+            //Make axes
+            let mysvg = d3.select("svg#barchart");
+            let leftAxis2 = d3.axisLeft(averagePScale).tickFormat(d3.format('$'))
+                annotations2.append("g")
+                            .attr("class", "y axis")
+                            .attr("transform",`translate(${margin.left-10},${margin.top})`)
+                            .call(leftAxis2);
+
+            let leftGridlines2 = d3.axisLeft(averagePScale)
+                                  .tickSize(-chartWidth2-10)
+                                  .tickFormat("")
+                annotations2.append("g")
+                            .attr("class", "y gridlines")
+                            .attr("transform",`translate(${margin.left-10},${margin.top})`)
+                            .call(leftGridlines2);
+
+            let bottomAxis2 = d3.axisBottom(UserRatingScale)
+                    annotations2.append("g")
+                            .attr("class", "x axis")
+                            .attr("transform",`translate(${margin.left},${chartHeight2+margin.top+10})`)
+                            .call(bottomAxis2);
+
+            //data join some bar
+             chartArea.selectAll('rect.bar').data( data )
+                                            .join('rect').attr('class','bar')
+                                            .attr("fill", "steelblue")
+                                            .attr("x", d => UserRatingScale(d.UserRating))
+                                            .attr("y", d => averagePScale(d.average))
+                                            .attr("height", d=>averagePScale(0)-averagePScale(d.average) )
+                                            .attr("width", UserRatingScale.bandwidth());
+
+                                            //.attr("width", d=> 
+
+                                            //.style("fill", d =>{if (d.UserRating<13){return "orange"} else {return "steelblue"} })
 
 
-                    const UserRatingExtent = d3.extent(data, d => d['UserRating']);
-                    const priceExtent = d3.extent(data, d => d['price']);
-                    console.log(UserRatingExtent);
-                    console.log(priceExtent);
-
-                     })
 
 
-                </script>
+
+
+
+
+
+             })
+
+
+        </script>
+
+
 
 
 
