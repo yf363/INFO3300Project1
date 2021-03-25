@@ -155,16 +155,16 @@
             </svg>
             <!-- <div id="button-bar"></div> -->
 
-            <script id="notes2">
+            <script id="notes1">
                 let mysvg = d3.select("svg#barchart");
-                const width2 = svg.attr("width");
-                const height2 = svg.attr("height");
-                const margin2= {top: 10, right: 10, bottom: 50, left: 50};
-                const chartWidth2 = width - margin.left - margin.right;
-                const chartHeight2 = height - margin.top - margin.bottom;
+                const width1 = svg.attr("width");
+                const height1 = svg.attr("height");
+                const margin1= {top: 10, right: 10, bottom: 50, left: 50};
+                const chartWidth1 = width - margin.left - margin.right;
+                const chartHeight1 = height - margin.top - margin.bottom;
 
-                let annotations2 = mysvg.append("g").attr("id","annotations");
-                let chartArea2 = mysvg.append("g").attr("id","points")
+                let annotations1 = mysvg.append("g").attr("id","annotations");
+                let chartArea1 = mysvg.append("g").attr("id","points")
                                                   .attr("transform",`translate(${margin.left},${margin.top})`);
                 
                   d3.select("#label1").raise();
@@ -214,36 +214,36 @@
 
                 console.log(UserRatingExtent);
                 console.log(averagePExtent);
-                const UserRatingScale = d3.scaleBand().domain([3.6, 4.0, 4.1, 4.2,4.3,4.4,4.5,4.6,4.7,4.8,4.9]).range([0,chartWidth2])
+                const UserRatingScale = d3.scaleBand().domain([3.6, 4.0, 4.1, 4.2,4.3,4.4,4.5,4.6,4.7,4.8,4.9]).range([0,chartWidth1])
                                             .padding(0.05);
-                const averagePScale = d3.scaleLinear().domain([0,20]).range([chartHeight2,0]);
+                const averagePScale = d3.scaleLinear().domain([0,20]).range([chartHeight1,0]);
                 
                 //Make axes
                 let mysvg = d3.select("svg#barchart");
-                let leftAxis2 = d3.axisLeft(averagePScale).tickFormat(d3.format('$'))
-                    annotations2.append("g")
+                let leftAxis1 = d3.axisLeft(averagePScale).tickFormat(d3.format('$'))
+                    annotations1.append("g")
                                 .attr("class", "y axis")
                                 .attr("transform",`translate(${margin.left-10},${margin.top})`)
-                                .call(leftAxis2);
+                                .call(leftAxis1);
 
-                let leftGridlines2 = d3.axisLeft(averagePScale)
-                                      .tickSize(-chartWidth2-10)
+                let leftGridlines1 = d3.axisLeft(averagePScale)
+                                      .tickSize(-chartWidth1-10)
                                       .tickFormat("")
-                    annotations2.append("g")
+                    annotations1.append("g")
                                 .attr("class", "y gridlines")
                                 .attr("transform",`translate(${margin.left-10},${margin.top})`)
-                                .call(leftGridlines2);
+                                .call(leftGridlines1);
 
-                let bottomAxis2 = d3.axisBottom(UserRatingScale)
-                        annotations2.append("g")
+                let bottomAxis1 = d3.axisBottom(UserRatingScale)
+                        annotations1.append("g")
                                 .attr("class", "x axis")
-                                .attr("transform",`translate(${margin.left},${chartHeight2+margin.top+10})`)
-                                .call(bottomAxis2);
+                                .attr("transform",`translate(${margin.left},${chartHeight1+margin.top+10})`)
+                                .call(bottomAxis1);
 
                 
 
                 //data join some bar
-                 chartArea2.selectAll('rect.bar').data( data_ratingGroup)
+                 chartArea1.selectAll('rect.bar').data( data_ratingGroup)
                                                 .join('rect').attr('class','bar')
                                                 .attr("fill", "steelblue")
                                                 .attr("x", d => UserRatingScale(d.UserRating))
