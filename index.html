@@ -39,12 +39,14 @@
             <p style="color:#fff">Are expensive books worth the price?</p>
         </div>
 
-        <svg id="barchart" height="600" width="800" style="margin-top:50px" >
-            <text id="label1" x="350" y="490"  text-anchor="end" alignment-baseline="hanging" style="font-size:18px">
-            </text> 
-            <text id="label2" x="600" y="250"  text-anchor="end" alignment-baseline="hanging" style="font-size:18px">
-            </text> 
+        <div class="svg-block" style="text-align:center" >
+            <svg id="barchart" height="600" width="800" style="margin-top:50px" >
+                <text id="label1" x="350" y="490"  text-anchor="end" alignment-baseline="hanging" style="font-size:18px">
+                </text> 
+                <text id="label2" x="700" y="250"  text-anchor="end" alignment-baseline="hanging" style="font-size:18px">
+                </text> 
         </svg>
+        </div>
 
         <div class="observe-block" style="background:#146eb4;padding-top:5px;padding-bottom:5px;padding-left:10px">
             <p style="color:#fff">Observations</p>
@@ -81,7 +83,7 @@
             let mysvg = d3.select("svg#barchart");
             const width1 = svg.attr("width");
             const height1 = svg.attr("height");
-            const margin1= {top: 10, right: 10, bottom: 50, left: 50};
+            const margin1= {top: 10, right: 120, bottom: 50, left: 50};
             const chartWidth1 = width - margin.left - margin.right;
             const chartHeight1 = height - margin.top - margin.bottom;
             let annotations1 = mysvg.append("g").attr("id","annotations");
