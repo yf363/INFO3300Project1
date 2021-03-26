@@ -262,7 +262,112 @@
                             return { "UserRating": UserRating, "price": avg };
                 });
                 console.log(data_ratingGroup);
+
+                     //Count the number of rate values
+                    let data_sortRate = data;
+                    data_sortRate.sort(function(a, b) {
+                        return b.UserRating - a.UserRating;
+                    });
+                    console.log(data_sortRate);
+                    let rateValues = [];
+                    for(let i=0; i<data_sortRate.length; i++) {
+                        rateValues[i] = data_sortRate[i].UserRating;
+                    }
+                    console.log("rate values:");
+                    console.log(rateValues);
+               
+                    //count books what they have for different level of userratings to calculate average price
+                    var v = rateValues;    
+                    var count = 0;
                 
+                    for (var i = 0; i < v.length; i++){
+                    if(v[i] === 3.6){
+                        count++;
+                        }
+                     }
+                    console.log (count);
+                    var v = rateValues;    
+
+                    var count1 = 0;
+                    for (var i = 0; i < v.length; i++){
+                    if(v[i] ===4.0){
+                        count1++;
+                        }
+                     }
+                    console.log (count1);
+
+                    var count2 = 0;
+                    for (var i = 0; i < v.length; i++){
+                    if(v[i] === 4.1){
+                        count2++;
+                        }
+                     }
+                    console.log (count2);
+
+                    var count3 = 0;
+                    for (var i = 0; i < v.length; i++){
+                    if(v[i] === 4.2){
+                        count3++;
+                        }
+                     }
+                    console.log (count3);
+
+                    var count4 = 0;
+                    for (var i = 0; i < v.length; i++){
+                    if(v[i] === 4.3){
+                        count4++;
+                        }
+                     }
+                    console.log (count4);
+
+                    var count5 = 0;
+                    for (var i = 0; i < v.length; i++){
+                    if(v[i] === 4.4){
+                        count5++;
+                        }
+                     }
+                    console.log (count5);
+
+                    var count6 = 0;
+                    for (var i = 0; i < v.length; i++){
+                    if(v[i] === 4.5){
+                        count6++;
+                        }
+                     }
+                    console.log (count6);
+
+                    var count7 = 0;
+                    for (var i = 0; i < v.length; i++){
+                    if(v[i] === 4.6){
+                        count7++;
+                        }
+                     }
+                    console.log (count7);
+
+                    var count8 = 0;
+                    for (var i = 0; i < v.length; i++){
+                    if(v[i] === 4.7){
+                        count8++;
+                        }
+                     }
+                    console.log (count8);
+                    var count9 = 0;
+                    for (var i = 0; i < v.length; i++){
+                    if(v[i] === 4.8){
+                        count9++;
+                        }
+                     }
+                    console.log (count9);
+
+                    var count10 = 0;
+                    for (var i = 0; i < v.length; i++){
+                    if(v[i] === 4.9){
+                        count10++;
+                        }
+                     }
+                    console.log (count10);  
+             var mylist=[1,4,2,1,10,10,19,39,51,76,37];
+            
 
             // Extent and Scale
             const UserRatingExtent = d3.extent(data, d => d['UserRating']);
@@ -322,7 +427,7 @@
                                             .attr("y", d => averagePScale(d.price))
                                             .attr("height", d=>averagePScale(0)-averagePScale(d.price) )
                                             .attr("width", UserRatingScale.bandwidth())
-                                            .style("fill", "#ff9900");
+                                            .style("fill", "#ff9900")
                                             //.style("fill", d =>{if (d.price>18){return "#146eb4"} else {return "#ff9900"} });
 
             //add dot line of average price which exceed 18
@@ -336,16 +441,93 @@
                 .attr("stroke-width","3")
                 .attr("stroke-dasharray", "4");
             mysvg.append("text")
-                .attr("transform",`translate(${margin1.left-75},${margin1.top+40})`)
+                .attr("transform",`translate(${margin1.left+500},${margin1.top+40})`)
                 .attr("text-anchor","middle")
                 .attr("dominant-baseline","hanging")
                 .attr("font-size","13px")
                 .attr("font-family","Arial")
                 .attr("fill","#ff9900")
                 .text("avg>$18");
-
-           
-
+            //add text of the whole number books of the same user rating 
+            mysvg.append("text")
+                    .attr("transform",`translate(${margin1.left-5},${margin1.top+20})`)
+                    .attr("text-anchor","middle")
+                    .attr("font-size","20px")
+                    .attr("x",30)
+                    .attr('y',100)
+                    .text(1);
+            mysvg.append("text")
+                    .attr("transform",`translate(${margin1.left+33},${margin1.top+50})`)
+                    .attr("text-anchor","middle")
+                    .attr("font-size","20px")
+                    .attr("x",30)
+                    .attr('y',100)
+                    .text(4);             
+             mysvg.append("text")
+                    .attr("transform",`translate(${margin1.left+73},${margin1.top+100})`)
+                    .attr("text-anchor","middle")
+                    .attr("font-size","20px")
+                    .attr("x",30)
+                    .attr('y',100)
+                    .text(2);
+                    mysvg.append("text")
+                    .attr("transform",`translate(${margin1.left+114},${margin1.top+250})`)
+                    .attr("text-anchor","middle")
+                    .attr("font-size","20px")
+                    .attr("x",30)
+                    .attr('y',100)
+                    .text(1);
+                    mysvg.append("text")
+                    .attr("transform",`translate(${margin1.left+155},${margin1.top+100})`)
+                    .attr("text-anchor","middle")
+                    .attr("font-size","20px")
+                    .attr("x",30)
+                    .attr('y',100)
+                    .text(10);
+                    mysvg.append("text")
+                    .attr("transform",`translate(${margin1.left+195},${margin1.top+150})`)
+                    .attr("text-anchor","middle")
+                    .attr("font-size","20px")
+                    .attr("x",30)
+                    .attr('y',100)
+                    .text(10);
+                    mysvg.append("text")
+                    .attr("transform",`translate(${margin1.left+235},${margin1.top+50})`)
+                    .attr("text-anchor","middle")
+                    .attr("font-size","20px")
+                    .attr("x",30)
+                    .attr('y',100)
+                    .text(19);
+                    mysvg.append("text")
+                    .attr("transform",`translate(${margin1.left+275},${margin1.top+140})`)
+                    .attr("text-anchor","middle")
+                    .attr("font-size","20px")
+                    .attr("x",30)
+                    .attr('y',100)
+                    .text(39);
+                    mysvg.append("text")
+                    .attr("transform",`translate(${margin1.left+315},${margin1.top+160})`)
+                    .attr("text-anchor","middle")
+                    .attr("font-size","20px")
+                    .attr("x",30)
+                    .attr('y',100)
+                    .text(51);
+                    mysvg.append("text")
+                    .attr("transform",`translate(${margin1.left+353},${margin1.top+165})`)
+                    .attr("text-anchor","middle")
+                    .attr("font-size","20px")
+                    .attr("x",30)
+                    .attr('y',100)
+                    .text(76);
+                    mysvg.append("text")
+                    .attr("transform",`translate(${margin1.left+400},${margin1.top+140})`)
+                    .attr("text-anchor","middle")
+                    .attr("font-size","20px")
+                    .attr("x",30)
+                    .attr('y',100)
+                    .text(37);
+                        
+                        
 
 
             // plot 3 chart
@@ -446,17 +628,21 @@
             //     .attr("cy", d => reviewScale(d['reviews']) );
 
             // draw a legend
-                let data_sortRate = data;
-                data_sortRate.sort(function(a, b) {
-                    return b.UserRating - a.UserRating;
-                });
-                console.log(data_sortRate);
-                let rateValues = [];
-                for(let i=0; i<data_sortRate.length; i++) {
-                    rateValues[i] = data_sortRate[i].UserRating;
-                }
-                console.log("rate values:");
-                console.log(rateValues);
+                // let data_sortRate = data;
+                // data_sortRate.sort(function(a, b) {
+                //     return b.UserRating - a.UserRating;
+                // });
+                // console.log(data_sortRate);
+                // let rateValues = [];
+                // for(let i=0; i<data_sortRate.length; i++) {
+                //     rateValues[i] = data_sortRate[i].UserRating;
+                // }
+                // console.log("rate values:");
+                // console.log(rateValues);
+
+               
+
+
                 let quantile = d3.scaleQuantile()
                     .domain(rateValues)
                     .range(['#146eb4', '#474747', '#ff9900']);
