@@ -321,9 +321,20 @@
                                             .attr("y", d => averagePScale(d.price))
                                             .attr("height", d=>averagePScale(0)-averagePScale(d.price) )
                                             .attr("width", UserRatingScale.bandwidth())
-                                            .style("fill", d =>{if (d.price>18){return "#146eb4"} else {return "#ff9900"} });
+                                            .style("fill", "#ff9900");
+                                            //.style("fill", d =>{if (d.price>18){return "#146eb4"} else {return "#ff9900"} });
 
-            
+             mysvg.append("line")
+                .attr("transform",`translate(${margin1.left-10},${margin1.top})`)
+                .attr("x1", 0)
+                .attr("x2", chartWidth1+10)
+                .attr("y1", averagePScale("18"))
+                .attr("y2", averagePScale("18"))
+                .attr("stroke", "#FF8000")
+                .attr("stroke-width","3")
+                .attr("stroke-dasharray", "4");
+
+           
 
 
 
