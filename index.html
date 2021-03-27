@@ -1,681 +1,625 @@
 <html>
-    <!--
-        codes reference:
-        1. Average in Javascript by a key - StackOverflow
-        https://stackoverflow.com/questions/60030859/average-in-javascript-by-a-key
-        2. d3 SVG Legend (v4)
-        https://d3-legend.susielu.com/
-    -->
-    <head>
-        <title>INFO5100 Project 1</title>
-        <script src="https://d3js.org/d3.v6.min.js"></script>
-        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
-    </head>
-    <style>
-        .gridlines line {
-            stroke: #bbb;
-        }
+<!--
+    codes reference:
+    1. Average in Javascript by a key - StackOverflow
+    https://stackoverflow.com/questions/60030859/average-in-javascript-by-a-key
+    2. d3 SVG Legend (v4)
+    https://d3-legend.susielu.com/
+-->
+<head>
+    <title>INFO5100 Project 1</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
+</head>
+<style>
+    .gridlines line {
+        stroke: #bbb;
+    }
 
-        .gridlines .domain {
-            stroke: none;
-        }
-    </style>
-    <body>
-        <div class="title-block" style="background:#FF9900;padding-top:20px;padding-bottom:20px;text-align:center">
-                <h1 style="text-transform:uppercase;font-weight:800;color:#fff">Amazon Top 50 Selling Books</h1>
-                <h4 style="color:#fff">Data-Driven Web Applications Project 1</h4>
-        </div>
+    .gridlines .domain {
+        stroke: none;
+    }
+</style>
+<body>
+<div class="title-block" style="background:#FF9900;padding-top:20px;padding-bottom:20px;text-align:center">
+    <h1 style="text-transform:uppercase;font-weight:800;color:#fff">Amazon Top 50 Selling Books</h1>
+    <h4 style="color:#fff">Data-Driven Web Applications Project 1</h4>
+</div>
 
-        <div class="question-block" style="background:#000;padding-top:5px;padding-bottom:5px;padding-left:10px">
-            <h4 style="color:#fff">Data Visualization #1: Number of Books by Price and Year</h4>
-        </div>
+<div class="question-block" style="background:#000;padding-top:5px;padding-bottom:5px;padding-left:10px">
+    <h4 style="color:#fff">Data Visualization #1: Number of Books by Price and Year</h4>
+</div>
 
-        <div class="svg-block" style="text-align:center" >
-            <svg id="scatterplot" height="500" width="670" style="margin-top:50px">
-                <text id="label" x="670" y="45"  text-anchor="end" alignment-baseline="hanging" style="font-size:14px"></text>
-            </svg>
-        </div>
+<div class="svg-block" style="text-align:center" >
+    <svg id="scatterplot" height="500" width="670" style="margin-top:50px">
+        <text id="label" x="670" y="45"  text-anchor="end" alignment-baseline="hanging" style="font-size:14px"></text>
+    </svg>
+</div>
 
-        <div class="observe-block" style="background:#146eb4;padding-top:5px;padding-bottom:5px;padding-left:10px">
-            <h4 style="color:#fff">Observations</h4>
-            <p style="color:#fff">text here</p>
-        </div>
+<div class="observe-block" style="background:#146eb4;padding-top:5px;padding-bottom:5px;padding-left:10px">
+    <h4 style="color:#fff">Observations</h4>
+    <p style="color:#fff">The best selling books are in the affordable $5 - $20 range and the prices are consistent over time.</p>
+</div>
 
-        <div class="question-block" style="background:#000;padding-top:5px;padding-bottom:5px;padding-left:10px">
-            <h4 style="color:#fff">Data Visualization #2: Amazon Ratings and Price of Books</h4>
-        </div>
+<div class="question-block" style="background:#000;padding-top:5px;padding-bottom:5px;padding-left:10px">
+    <h4 style="color:#fff">Data Visualization #2: Amazon Ratings and Price of Books</h4>
+</div>
 
-        <div class="svg-block" style="text-align:center" >
-            <svg id="barchart" height="520" width="670" style="margin-top:50px" >
-                <text id="label1" x="350" y="490"  text-anchor="end" alignment-baseline="hanging" style="font-size:14px">
-                </text> 
+<div class="svg-block" style="text-align:center" >
+    <svg id="barchart" height="520" width="670" style="margin-top:50px" >
+        <text id="label1" x="350" y="490"  text-anchor="end" alignment-baseline="hanging" style="font-size:14px">
+        </text>
 
-        </svg>
-        </div>
+    </svg>
+</div>
 
-        <div class="observe-block" style="background:#146eb4;padding-top:5px;padding-bottom:5px;padding-left:10px">
-            <h4 style="color:#fff">Observations</h4>
-            <p style="color:#fff">text here</p>
-        </div>
+<div class="observe-block" style="background:#146eb4;padding-top:5px;padding-bottom:5px;padding-left:10px">
+    <h4 style="color:#fff">Observations</h4>
+    <p style="color:#fff">Expensive books are not necessarily always worth it because the average price for books in the
+        higher-end of ratings (4.6 - 4.9) is in the $10 - $11 range, overall lower than the average price of $11.1.
+        Furthermore, cheaper books indicate higher user ratings considering the high consolidation of books in the
+        high-user rating and affordable price range.</p>
+</div>
 
-        <div class="question-block" style="background:#000;padding-top:5px;padding-bottom:5px;padding-left:10px">
-            <h4 style="color:#fff">Data Visualization #3: Number of Amazon Reviews and Price of Books</h4>
-        </div>
+<div class="question-block" style="background:#000;padding-top:5px;padding-bottom:5px;padding-left:10px">
+    <h4 style="color:#fff">Data Visualization #3: Number of Amazon Reviews and Price of Books</h4>
+</div>
 
-        <div class="svg-block" style="text-align:center" >
-            <svg id="lineplot" height="500" width="750" style="margin-top:50px; margin-bottom: 20px"></svg>
-        </div>
+<div class="svg-block" style="text-align:center" >
+    <svg id="lineplot" height="500" width="750" style="margin-top:50px; margin-bottom: 20px"></svg>
+</div>
 
-        <div class="observe-block" style="background:#146eb4;padding-top:5px;padding-bottom:5px;padding-left:10px">
-            <h4 style="color:#fff">Observations</h4>
-            <p style="color:#fff">text here</p>
-        </div>
+<div class="observe-block" style="background:#146eb4;padding-top:5px;padding-bottom:5px;padding-left:10px">
+    <h4 style="color:#fff">Observations</h4>
+    <p style="color:#fff">For all groups of user ratings, the cheaper books garnered significantly more reviews.
+        Note that there are outliers in the chart that indicate few expensive books which received higher-end ratings.
+        Overall, we see a consolidation of higher-end ratings in books that are in the $5 - $10 price range.</p>
+</div>
 
-        <script id="notes1">
-            // plot 1 settings
-            const svg=d3.select("svg#scatterplot");
-            const width = svg.attr("width");
-            const height = svg.attr("height");
-            const margin = {top: 10, right: 120, bottom: 60, left: 100};
-            const chartWidth = width - margin.left - margin.right;
-            const chartHeight = height - margin.top - margin.bottom;
-            let annotations = svg.append("g")
-                                .attr("id","annotations");
-            let chartArea = svg.append("g")
-                                .attr("id","points")
-                                .attr("transform","translate("+(margin.left)+","+(margin.top)+")");
-            d3.select("#label").raise();
+<script id="notes1">
+    // plot 1 settings
+    const svg=d3.select("svg#scatterplot");
+    const width = svg.attr("width");
+    const height = svg.attr("height");
+    const margin = {top: 10, right: 120, bottom: 60, left: 100};
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+    let annotations = svg.append("g")
+        .attr("id","annotations");
+    let chartArea = svg.append("g")
+        .attr("id","points")
+        .attr("transform","translate("+(margin.left)+","+(margin.top)+")");
+    d3.select("#label").raise();
 
-            //plot 2 settings
-            let mysvg = d3.select("svg#barchart");
-            const width1 = svg.attr("width");
-            const height1 = svg.attr("height");
-            const margin1= {top: 10, right: 120, bottom: 60, left: 100};
-            const chartWidth1 = width1 - margin1.left - margin1.right;
-            const chartHeight1 = height1 - margin1.top - margin1.bottom;
-            let annotations1 = mysvg.append("g").attr("id","annotations");
-            let chartArea1 = mysvg.append("g").attr("id","points")
-                                                  .attr("transform",`translate(${margin1.left},${margin1.top})`);
+    //plot 2 settings
+    let mysvg = d3.select("svg#barchart");
+    const width1 = svg.attr("width");
+    const height1 = svg.attr("height");
+    const margin1= {top: 10, right: 120, bottom: 60, left: 100};
+    const chartWidth1 = width1 - margin1.left - margin1.right;
+    const chartHeight1 = height1 - margin1.top - margin1.bottom;
+    let annotations1 = mysvg.append("g").attr("id","annotations");
+    let chartArea1 = mysvg.append("g").attr("id","points")
+        .attr("transform",`translate(${margin1.left},${margin1.top})`);
 
-            // plot 3 settings
-            const svg2=d3.select("svg#lineplot");
-            const width2 = svg2.attr("width");
-            const height2 = svg2.attr("height");
-            const margin2 = {top: 40, right: 150, bottom: 60, left: 150};
-            const chartWidth2 = width2 - margin2.left - margin2.right;
-            const chartHeight2 = height2 - margin2.top - margin2.bottom;
-            let annotations2 = svg2.append("g")
-                .attr("id","annotations2");
-            let chartArea2 = svg2.append("g")
-                .attr("id","points2")
-                .attr("transform","translate("+(margin2.left)+","+(margin2.top)+")");
+    // plot 3 settings
+    const svg2=d3.select("svg#lineplot");
+    const width2 = svg2.attr("width");
+    const height2 = svg2.attr("height");
+    const margin2 = {top: 40, right: 150, bottom: 60, left: 150};
+    const chartWidth2 = width2 - margin2.left - margin2.right;
+    const chartHeight2 = height2 - margin2.top - margin2.bottom;
+    let annotations2 = svg2.append("g")
+        .attr("id","annotations2");
+    let chartArea2 = svg2.append("g")
+        .attr("id","points2")
+        .attr("transform","translate("+(margin2.left)+","+(margin2.top)+")");
 
 
 
-            d3.json("./data.json").then(data =>{
-            console.log(data);
-            let minYear = 2015;
-            let maxYear = 2019;
-            data.forEach((d,i)=>{
-                d['price']= Number(d['Price']);
-                d['UserRating']= Number(d['User Rating']);
-                d['reviews']= Number(d['Reviews']);
-                d['year']= Number(d['Year'])
-            });
+    d3.json("./data.json").then(data =>{
+        console.log(data);
+        let minYear = 2015;
+        let maxYear = 2019;
+        data.forEach((d,i)=>{
+            d['price']= Number(d['Price']);
+            d['UserRating']= Number(d['User Rating']);
+            d['reviews']= Number(d['Reviews']);
+            d['year']= Number(d['Year'])
+        });
 
-            // Filter
-            data = data.filter((d)=>{
+        // Filter
+        data = data.filter((d)=>{
             return d['price'] !== "NaN" && d['Year'] >= minYear && d['Year'] <= maxYear;
-            });
-            console.log(data);
+        });
+        console.log(data);
 
-            //plot1 chart
-            // Calculate frequency of data with same year and price, and store the value as count
-            const combinedItems = (data = []) => {
-                const res = data.reduce((acc, obj) => {
-                    let found = false;
-                    for (let i = 0; i < acc.length; i++) {
-                        if (acc[i].year === obj.year && acc[i].price === obj.price) {
-                            found = true;
-                            acc[i].count++;
-                        }
+        //plot1 chart
+        // Calculate frequency of data with same year and price, and store the value as count
+        const combinedItems = (data = []) => {
+            const res = data.reduce((acc, obj) => {
+                let found = false;
+                for (let i = 0; i < acc.length; i++) {
+                    if (acc[i].year === obj.year && acc[i].price === obj.price) {
+                        found = true;
+                        acc[i].count++;
                     }
-                    if (!found) {
-                        obj.count = 1;
-                        acc.push(obj);
-                    }
-                    return acc;
-                }, []);
-                return res;
-            };
-            let data_combined = combinedItems(data);
-            // data_combined.forEach((d,i)=>{
-            //     if(d['price'] === 0) {
-            //         d['price']= d['price'] + 0.1;
-            //     }
-            // });
-            data_combined.sort(function(a, b) {
-                return b.count - a.count;
+                }
+                if (!found) {
+                    obj.count = 1;
+                    acc.push(obj);
+                }
+                return acc;
+            }, []);
+            return res;
+        };
+        let data_combined = combinedItems(data);
+
+        data_combined.sort(function(a, b) {
+            return b.count - a.count;
+        });
+        console.log(data_combined);
+        const rateExtent = d3.extent(data, d => d['UserRating']);
+        console.log(rateExtent);
+        // Extent and Scale
+        const yearExtent = d3.extent(data, d => d['year']);
+        const priceExtent = d3.extent(data_combined, d => d['price']);
+        const countExtent = d3.extent(data_combined, d => d['count']);
+        const priceMax = d3.max(data, d => d['price'] );
+        console.log(countExtent);
+        const yearScale = d3.scaleLinear().domain(yearExtent).range([0, chartWidth]);
+        const priceScale = d3.scaleLinear().domain(priceExtent).range([chartHeight, 0]);
+
+        // using count as the radius of the circles, and decides color based on this
+        const countScale = d3.scaleLinear().domain(countExtent).range([5, 15]);
+        const colorScale = d3.scaleSequential(function(t) {
+            return d3.interpolateOranges((t + 0.35)) }).domain(countExtent);
+
+
+        // draw axes
+        let leftAxis = d3.axisLeft(priceScale).ticks(10).tickFormat(d3.format("$"));
+        annotations.append("g")
+            .attr("class", "y axis")
+            .attr("transform","translate("+(margin.left-20)+","+(margin.top)+")")
+            .call(leftAxis);
+        let bottomAxis = d3.axisBottom(yearScale).ticks(5).tickFormat(d3.format("d"));
+        annotations.append("g")
+            .attr("class", "x axis")
+            .attr("transform","translate("+margin.left+","+(chartHeight+margin.top+10)+")")
+            .call(bottomAxis);
+
+        // draw gridlines
+        let leftGridlines = d3.axisLeft(priceScale).ticks(10)
+            .tickSize(-chartWidth-20)
+            .tickFormat("");
+        annotations.append("g").attr("class", "y gridlines")
+            .attr("transform","translate("+ (margin.left-20) +","+ margin.top +")")
+            .call(leftGridlines);
+
+        // label for axes
+        svg.append("text")
+            .attr("transform","translate("+ (margin.left + chartWidth / 2) +","+ (chartHeight + margin.top + 35) +")")
+            .attr("text-anchor","middle")
+            .attr("dominant-baseline","hanging")
+            .attr("font-size","15px")
+            .attr("font-family","Arial")
+            .text("year");
+
+        svg.append("text")
+            .attr("transform","translate("+ (margin.left - 70) +","+ (chartHeight / 2 + margin.top) +")")
+            .attr("text-anchor","middle")
+            .attr("dominant-baseline","hanging")
+            .attr("font-size","15px")
+            .attr("font-family","Arial")
+            .text("price");
+
+        // draw a legend
+        let categories = [1, 2, 3, 4, 5, 6, 7, 8];
+
+        let ordinal = d3.scaleOrdinal()
+            .domain(categories)
+            .range(categories.map((val, i) =>
+                //d3.interpolateOranges((i / (categories.length - 1)) / 2 + 0.35)
+                d3.interpolateOranges((i / (categories.length) + 0.35) * 0.9)
+            ));
+
+        let legendOrdinal = d3.legendColor()
+            .scale(ordinal);
+
+        annotations.append("g").attr("class", "legendOrdinal")
+            .attr("transform","translate("+ (chartWidth + margin.left + 50) +","+ (margin.top + 70) +")")
+            .call(legendOrdinal);
+
+        d3.select("#label").text("Number of Books");
+
+        // draw circles
+        data_combined.forEach( (d, i) => {
+            chartArea.append("circle")
+                .attr("cx", yearScale(d['year']))
+                .attr("cy", priceScale(d['price']))
+                .attr("r", countScale(d['count']))
+                .attr("opacity", 0.9)
+                .attr("i", i)
+                .attr("fill", colorScale(d['count']));
+        });
+
+
+
+        //plot2 chart
+        // calculate average price for each user rating level
+        let data_ratingGroup = Object.entries(data
+            .reduce((acc, x) => {
+                let arr = acc[x.UserRating] || [];
+                arr.push(x.price);
+                acc[x.UserRating] = arr;
+                return acc;
+            }, {}))
+            .map((x)=> {
+                let UserRating= x[0];
+                let price = x[1];
+                let sum = price.reduce((a, b) => a + b, 0);
+                let avg = (sum / price.length) || 0;
+                return { "UserRating": UserRating, "price": avg };
             });
-            console.log(data_combined);
-            const rateExtent = d3.extent(data, d => d['UserRating']);
-            console.log(rateExtent);
-            // Extent and Scale
-            const yearExtent = d3.extent(data, d => d['year']);
-            const priceExtent = d3.extent(data_combined, d => d['price']);
-            const countExtent = d3.extent(data_combined, d => d['count']);
-            const priceMax = d3.max(data, d => d['price'] );
-            console.log(countExtent);
-            const yearScale = d3.scaleLinear().domain(yearExtent).range([0, chartWidth]);
-            const priceScale = d3.scaleLinear().domain(priceExtent).range([chartHeight, 0]);
+        console.log("data_ratingGroup");
 
-            // using count as the radius of the circles, and decides color based on this
-            const countScale = d3.scaleLinear().domain(countExtent).range([5, 15]);
-            //const colorScale = d3.scaleOrdinal(d3.schemeTableau10);
-            //const colorScale = d3.scaleSequential().domain(countExtent).interpolator(d3.interpolateOranges);
-             const colorScale = d3.scaleSequential(function(t) {
-                 return d3.interpolateOranges((t + 0.35)) }).domain(countExtent);
+        console.log(data_ratingGroup);
 
+        //Count the number of rate values
+        // let data_sortRate = data;
+        // data_sortRate.sort(function(a, b) {
+        //     return b.UserRating - a.UserRating;
+        // });
+        // console.log(data_sortRate);
+        let rateValues = [];
+        for(let i=0; i<data.length; i++) {
+            rateValues[i] = data[i].UserRating;
+        }
+        console.log("rate values:");
+        console.log(rateValues);
 
-            // draw axes
-            let leftAxis = d3.axisLeft(priceScale).ticks(10).tickFormat(d3.format("$"));
-            annotations.append("g")
-                .attr("class", "y axis")
-                .attr("transform","translate("+(margin.left-20)+","+(margin.top)+")")
-                .call(leftAxis);
-            let bottomAxis = d3.axisBottom(yearScale).ticks(5).tickFormat(d3.format("d"));
-            annotations.append("g")
-                .attr("class", "x axis")
-                .attr("transform","translate("+margin.left+","+(chartHeight+margin.top+10)+")")
-                .call(bottomAxis);
+        console.log("count");
+        //count books what they have for different level of user ratings to calculate average price
+        let v = rateValues;
+        let count = 0;
 
-            // draw gridlines
-            let leftGridlines = d3.axisLeft(priceScale).ticks(10)
-                .tickSize(-chartWidth-20)
-                .tickFormat("");
-            annotations.append("g").attr("class", "y gridlines")
-                .attr("transform","translate("+ (margin.left-20) +","+ margin.top +")")
-                .call(leftGridlines);
+        for (let i = 0; i < v.length; i++){
+            if(v[i] === 3.6){
+                count++;
+            }
+        }
+        console.log (count);
 
-            // label for axes
-            svg.append("text")
-                .attr("transform","translate("+ (margin.left + chartWidth / 2) +","+ (chartHeight + margin.top + 35) +")")
-                .attr("text-anchor","middle")
-                .attr("dominant-baseline","hanging")
-                .attr("font-size","15px")
-                .attr("font-family","Arial")
-                .text("year");
+        let count1 = 0;
+        for (let i = 0; i < v.length; i++){
+            if(v[i] ===4.0){
+                count1++;
+            }
+        }
+        console.log (count1);
 
-            svg.append("text")
-                .attr("transform","translate("+ (margin.left - 70) +","+ (chartHeight / 2 + margin.top) +")")
-                .attr("text-anchor","middle")
-                .attr("dominant-baseline","hanging")
-                .attr("font-size","15px")
-                .attr("font-family","Arial")
-                .text("price");
+        let count2 = 0;
+        for (let i = 0; i < v.length; i++){
+            if(v[i] === 4.1){
+                count2++;
+            }
+        }
+        console.log (count2);
 
-            // draw a legend
-            var categories = [1, 2, 3, 4, 5, 6, 7, 8];
+        let count3 = 0;
+        for (let i = 0; i < v.length; i++){
+            if(v[i] === 4.2){
+                count3++;
+            }
+        }
+        console.log (count3);
 
-            var ordinal = d3.scaleOrdinal()
-                .domain(categories)
-                .range(categories.map((val, i) =>
-                    //d3.interpolateOranges((i / (categories.length - 1)) / 2 + 0.35)
-                    d3.interpolateOranges((i / (categories.length) + 0.35) * 0.9)
-                ));
+        let count4 = 0;
+        for (let i = 0; i < v.length; i++){
+            if(v[i] === 4.3){
+                count4++;
+            }
+        }
+        console.log (count4);
 
-            var legendOrdinal = d3.legendColor()
-                .scale(ordinal);
+        let count5 = 0;
+        for (let i = 0; i < v.length; i++){
+            if(v[i] === 4.4){
+                count5++;
+            }
+        }
+        console.log (count5);
 
-            annotations.append("g").attr("class", "legendOrdinal")
-                .attr("transform","translate("+ (chartWidth + margin.left + 50) +","+ (margin.top + 70) +")")
-                .call(legendOrdinal);
+        let count6 = 0;
+        for (let i = 0; i < v.length; i++){
+            if(v[i] === 4.5){
+                count6++;
+            }
+        }
+        console.log (count6);
 
-            d3.select("#label").text("Number of Books");
+        let count7 = 0;
+        for (let i = 0; i < v.length; i++){
+            if(v[i] === 4.6){
+                count7++;
+            }
+        }
+        console.log (count7);
 
-            // draw circles
-            data_combined.forEach( (d, i) => {
-                chartArea.append("circle")
-                    .attr("cx", yearScale(d['year']))
-                    .attr("cy", priceScale(d['price']))
-                    .attr("r", countScale(d['count']))
-                    .attr("opacity", 0.9)
-                    .attr("i", i)
-                    .attr("fill", colorScale(d['count']));
-            });
+        let count8 = 0;
+        for (let i = 0; i < v.length; i++){
+            if(v[i] === 4.7){
+                count8++;
+            }
+        }
+        console.log (count8);
+        let count9 = 0;
+        for (let i = 0; i < v.length; i++){
+            if(v[i] === 4.8){
+                count9++;
+            }
+        }
+        console.log (count9);
 
-            //plot2 chart
-            // calculate average price for each user rating level
-            let data_ratingGroup = Object.entries(data
-                        .reduce((acc, x) => {
-                            let arr = acc[x.UserRating] || [];
-                            arr.push(x.price);
-                            acc[x.UserRating] = arr;
-                            return acc;
-                        }, {}))
-                        .map((x)=> {
-                            let UserRating= x[0];
-                            let price = x[1];
-                            let sum = price.reduce((a, b) => a + b, 0);
-                            let avg = (sum / price.length) || 0;
-                            return { "UserRating": UserRating, "price": avg };
-                });
-                console.log(data_ratingGroup);
-
-                     //Count the number of rate values
-                    let data_sortRate = data;
-                    data_sortRate.sort(function(a, b) {
-                        return b.UserRating - a.UserRating;
-                    });
-                    console.log(data_sortRate);
-                    let rateValues = [];
-                    for(let i=0; i<data_sortRate.length; i++) {
-                        rateValues[i] = data_sortRate[i].UserRating;
-                    }
-                    console.log("rate values:");
-                    console.log(rateValues);
-               
-                    //count books what they have for different level of userratings to calculate average price
-                    var v = rateValues;    
-                    var count = 0;
-                
-                    for (var i = 0; i < v.length; i++){
-                    if(v[i] === 3.6){
-                        count++;
-                        }
-                     }
-                    console.log (count);
-                    var v = rateValues;    
-
-                    var count1 = 0;
-                    for (var i = 0; i < v.length; i++){
-                    if(v[i] ===4.0){
-                        count1++;
-                        }
-                     }
-                    console.log (count1);
-
-                    var count2 = 0;
-                    for (var i = 0; i < v.length; i++){
-                    if(v[i] === 4.1){
-                        count2++;
-                        }
-                     }
-                    console.log (count2);
-
-                    var count3 = 0;
-                    for (var i = 0; i < v.length; i++){
-                    if(v[i] === 4.2){
-                        count3++;
-                        }
-                     }
-                    console.log (count3);
-
-                    var count4 = 0;
-                    for (var i = 0; i < v.length; i++){
-                    if(v[i] === 4.3){
-                        count4++;
-                        }
-                     }
-                    console.log (count4);
-
-                    var count5 = 0;
-                    for (var i = 0; i < v.length; i++){
-                    if(v[i] === 4.4){
-                        count5++;
-                        }
-                     }
-                    console.log (count5);
-
-                    var count6 = 0;
-                    for (var i = 0; i < v.length; i++){
-                    if(v[i] === 4.5){
-                        count6++;
-                        }
-                     }
-                    console.log (count6);
-
-                    var count7 = 0;
-                    for (var i = 0; i < v.length; i++){
-                    if(v[i] === 4.6){
-                        count7++;
-                        }
-                     }
-                    console.log (count7);
-
-                    var count8 = 0;
-                    for (var i = 0; i < v.length; i++){
-                    if(v[i] === 4.7){
-                        count8++;
-                        }
-                     }
-                    console.log (count8);
-                    var count9 = 0;
-                    for (var i = 0; i < v.length; i++){
-                    if(v[i] === 4.8){
-                        count9++;
-                        }
-                     }
-                    console.log (count9);
-
-                    var count10 = 0;
-                    for (var i = 0; i < v.length; i++){
-                    if(v[i] === 4.9){
-                        count10++;
-                        }
-                     }
-                    console.log (count10);  
-             var mylist=[1,4,2,1,10,10,19,39,51,76,37];
-            
-
-            // Extent and Scale
-            const UserRatingExtent = d3.extent(data, d => d['UserRating']);
-            const averagePExtent = d3.extent(data_ratingGroup, d => d['price']);
-            console.log(UserRatingExtent);
-            console.log(averagePExtent);
-            const UserRatingScale = d3.scaleBand().domain([3.6, 4.0, 4.1, 4.2,4.3,4.4,4.5,4.6,4.7,4.8,4.9]).range([0,chartWidth1])
-                                            .padding(0.05);
-            const averagePScale = d3.scaleLinear().domain([0,20]).range([chartHeight1,0]);
-                
-            //Make axes and gridlines
-            let mysvg = d3.select("svg#barchart");
-            let leftAxis1 = d3.axisLeft(averagePScale).tickFormat(d3.format('$'));
-                    annotations1.append("g")
-                                .attr("class", "y axis")
-                                .attr("transform",`translate(${margin1.left-10},${margin1.top})`)
-                                .call(leftAxis1);
-
-            let leftGridlines1 = d3.axisLeft(averagePScale)
-                                      .tickSize(-chartWidth1-10)
-                                      .tickFormat("");
-                    annotations1.append("g")
-                                .attr("class", "y gridlines")
-                                .attr("transform",`translate(${margin1.left-10},${margin1.top})`)
-                                .call(leftGridlines1);
-
-            let bottomAxis1 = d3.axisBottom(UserRatingScale);
-                    annotations1.append("g")
-                                .attr("class", "x axis")
-                                .attr("transform",`translate(${margin1.left},${chartHeight1+margin1.top+10})`)
-                                .call(bottomAxis1);
-
-            // label for axes
-            mysvg.append("text")
-                .attr("transform","translate("+ (margin1.left + chartWidth1 / 2) +","+ (chartHeight1 + margin1.top + 35) +")")
-                .attr("text-anchor","middle")
-                .attr("dominant-baseline","hanging")
-                .attr("font-size","15px")
-                .attr("font-family","Arial")
-                .text("user rating for books");
-
-            mysvg.append("text")
-                .attr("transform","translate("+ (margin1.left - 70) +","+ (chartHeight1 / 2 + margin1.top) +")rotate(180)")
-                .attr("text-anchor","middle")
-                .attr("dominant-baseline","hanging")
-                .attr("font-size","15px")
-                .attr("font-family","Arial")
-                .attr("writing-mode","vertical-rl")
-                .text("average price");
-            
-
-            //Use data join some bar
-            chartArea1.selectAll('rect.bar').data( data_ratingGroup)
-                                            .join('rect').attr('class','bar')
-                                            .attr("fill", "steelblue")
-                                            .attr("x", d => UserRatingScale(d.UserRating))
-                                            .attr("y", d => averagePScale(d.price))
-                                            .attr("height", d=>averagePScale(0)-averagePScale(d.price) )
-                                            .attr("width", UserRatingScale.bandwidth())
-                                            .style("fill", "#ff9900")
-                                            //.style("fill", d =>{if (d.price>18){return "#146eb4"} else {return "#ff9900"} });
-
-            //add dot line of average price which exceed 18
-             mysvg.append("line")
-                .attr("transform",`translate(${margin1.left-10},${margin1.top})`)
-                .attr("x1", 0)
-                .attr("x2", chartWidth1+10)
-                .attr("y1", averagePScale("18"))
-                .attr("y2", averagePScale("18"))
-                .attr("stroke", "#FF8000")
-                .attr("stroke-width","3")
-                .attr("stroke-dasharray", "4");
-            mysvg.append("text")
-                .attr("transform",`translate(${margin1.left+500},${margin1.top+40})`)
-                .attr("text-anchor","middle")
-                .attr("dominant-baseline","hanging")
-                .attr("font-size","13px")
-                .attr("font-family","Arial")
-                .attr("fill","#ff9900")
-                .text("avg>$18");
-            //add text of the whole number books of the same user rating 
-            mysvg.append("text")
-                    .attr("transform",`translate(${margin1.left-5},${margin1.top+20})`)
-                    .attr("text-anchor","middle")
-                    .attr("font-size","20px")
-                    .attr("x",30)
-                    .attr('y',100)
-                    .text(1);
-            mysvg.append("text")
-                    .attr("transform",`translate(${margin1.left+33},${margin1.top+50})`)
-                    .attr("text-anchor","middle")
-                    .attr("font-size","20px")
-                    .attr("x",30)
-                    .attr('y',100)
-                    .text(4);             
-             mysvg.append("text")
-                    .attr("transform",`translate(${margin1.left+73},${margin1.top+100})`)
-                    .attr("text-anchor","middle")
-                    .attr("font-size","20px")
-                    .attr("x",30)
-                    .attr('y',100)
-                    .text(2);
-                    mysvg.append("text")
-                    .attr("transform",`translate(${margin1.left+114},${margin1.top+250})`)
-                    .attr("text-anchor","middle")
-                    .attr("font-size","20px")
-                    .attr("x",30)
-                    .attr('y',100)
-                    .text(1);
-                    mysvg.append("text")
-                    .attr("transform",`translate(${margin1.left+155},${margin1.top+100})`)
-                    .attr("text-anchor","middle")
-                    .attr("font-size","20px")
-                    .attr("x",30)
-                    .attr('y',100)
-                    .text(10);
-                    mysvg.append("text")
-                    .attr("transform",`translate(${margin1.left+195},${margin1.top+150})`)
-                    .attr("text-anchor","middle")
-                    .attr("font-size","20px")
-                    .attr("x",30)
-                    .attr('y',100)
-                    .text(10);
-                    mysvg.append("text")
-                    .attr("transform",`translate(${margin1.left+235},${margin1.top+50})`)
-                    .attr("text-anchor","middle")
-                    .attr("font-size","20px")
-                    .attr("x",30)
-                    .attr('y',100)
-                    .text(19);
-                    mysvg.append("text")
-                    .attr("transform",`translate(${margin1.left+275},${margin1.top+140})`)
-                    .attr("text-anchor","middle")
-                    .attr("font-size","20px")
-                    .attr("x",30)
-                    .attr('y',100)
-                    .text(39);
-                    mysvg.append("text")
-                    .attr("transform",`translate(${margin1.left+315},${margin1.top+160})`)
-                    .attr("text-anchor","middle")
-                    .attr("font-size","20px")
-                    .attr("x",30)
-                    .attr('y',100)
-                    .text(51);
-                    mysvg.append("text")
-                    .attr("transform",`translate(${margin1.left+353},${margin1.top+165})`)
-                    .attr("text-anchor","middle")
-                    .attr("font-size","20px")
-                    .attr("x",30)
-                    .attr('y',100)
-                    .text(76);
-                    mysvg.append("text")
-                    .attr("transform",`translate(${margin1.left+400},${margin1.top+140})`)
-                    .attr("text-anchor","middle")
-                    .attr("font-size","20px")
-                    .attr("x",30)
-                    .attr('y',100)
-                    .text(37);
-                        
-                        
+        let count10 = 0;
+        for (let i = 0; i < v.length; i++){
+            if(v[i] === 4.9){
+                count10++;
+            }
+        }
+        console.log (count10);
+        let mylist=[count, count1,count2,count3,count4,count5,count6,count7,count8,count9,count10];
 
 
-            // plot 3 chart
-            // calculate average reviews for each price level
-            // let data_priceGroup = Object.entries(data
-            //     .reduce((acc, x) => {
-            //         let arr = acc[x.price] || [];
-            //         arr.push(x.reviews);
-            //         acc[x.price] = arr;
-            //         return acc;
-            //     }, {}))
-            //     .map((x)=> {
-            //         let price = x[0];
-            //         let reviews = x[1];
-            //         let sum = reviews.reduce((a, b) => a + b, 0);
-            //         let avg = (sum / reviews.length) || 0;
-            //         return { "price": price, "reviews": avg };
-            //     });
-            //
-            // console.log(data_priceGroup);
+        // Extent and Scale
+        const UserRatingExtent = d3.extent(data, d => d['UserRating']);
+        const averagePExtent = d3.extent(data_ratingGroup, d => d['price']);
+        console.log(UserRatingExtent);
+        console.log(averagePExtent);
+        const UserRatingScale = d3.scaleBand().domain([3.6, 4.0, 4.1, 4.2,4.3,4.4,4.5,4.6,4.7,4.8,4.9]).range([0,chartWidth1])
+            .padding(0.05);
+        const averagePScale = d3.scaleLinear().domain([0,averagePExtent[1]]).range([chartHeight1,0]);
+        const avgPrice = d3.mean(data, d => d['price']);
+        console.log("averagePScale(0)")
+        console.log(averagePScale(0))
 
-            // new extent and scales
-            //const priceExtent2 = d3.extent(data, d => d['price']);
-            const reviewExtent = d3.extent(data, d => d['reviews']);
-            console.log(reviewExtent);
-            const priceScale2 = d3.scaleLinear().domain(priceExtent).range([0, chartWidth2]);
-            const reviewScale = d3.scaleLog().domain(reviewExtent).range([chartHeight2, 0]);
+        //Make axes and gridlines
+        let mysvg = d3.select("svg#barchart");
+        let leftAxis1 = d3.axisLeft(averagePScale).tickFormat(d3.format('$'));
+        annotations1.append("g")
+            .attr("class", "y axis")
+            .attr("transform",`translate(${margin1.left-10},${margin1.top})`)
+            .call(leftAxis1);
 
+        let leftGridlines1 = d3.axisLeft(averagePScale)
+            .tickSize(-chartWidth1-10)
+            .tickFormat("");
+        annotations1.append("g")
+            .attr("class", "y gridlines")
+            .attr("transform",`translate(${margin1.left-10},${margin1.top})`)
+            .call(leftGridlines1);
 
-            // draw axes
-            let leftAxis2 = d3.axisLeft(reviewScale).ticks(10).tickFormat(d3.format(",d"));
-            annotations2.append("g")
-                .attr("class", "y axis")
-                .attr("transform","translate("+(margin2.left-10)+","+(margin2.top)+")")
-                .call(leftAxis2);
-            let bottomAxis2 = d3.axisBottom(priceScale2).ticks(10).tickFormat(d3.format("$"));
-            annotations2.append("g")
-                .attr("class", "x axis")
-                .attr("transform","translate("+margin2.left+","+(chartHeight2+margin2.top+10)+")")
-                .call(bottomAxis2);
+        let bottomAxis1 = d3.axisBottom(UserRatingScale);
+        annotations1.append("g")
+            .attr("class", "x axis")
+            .attr("transform",`translate(${margin1.left},${chartHeight1+margin1.top+10})`)
+            .call(bottomAxis1);
 
-            // draw gridlines
-            let leftGridlines2 = d3.axisLeft(reviewScale).ticks(10)
-                .tickSize(-chartWidth2-20)
-                .tickFormat("");
-            annotations2.append("g").attr("class", "y gridlines")
-                .attr("transform","translate("+ (margin2.left-10) +","+ margin2.top +")")
-                .call(leftGridlines2);
+        // label for axes
+        mysvg.append("text")
+            .attr("transform","translate("+ (margin1.left + chartWidth1 / 2) +","+ (chartHeight1 + margin1.top + 35) +")")
+            .attr("text-anchor","middle")
+            .attr("dominant-baseline","hanging")
+            .attr("font-size","15px")
+            .attr("font-family","Arial")
+            .text("user rating for books");
 
-            let bottomGridlines2 = d3.axisBottom(priceScale2).ticks(10)
-                .tickSize(-chartHeight2-10)
-                .tickFormat("");
-            annotations2.append("g").attr("class", "x gridlines")
-                .attr("transform","translate("+ (margin2.left) +","+ (chartHeight2+margin2.top+10) +")")
-                .call(bottomGridlines2);
-
-            // label for axes
-            svg2.append("text")
-                .attr("transform","translate("+ (margin2.left + chartWidth2 / 2) +","+ (chartHeight2 + margin2.top + 35) +")")
-                .attr("text-anchor","middle")
-                .attr("dominant-baseline","hanging")
-                .attr("font-size","15px")
-                .attr("font-family","Arial")
-                .text("price");
-
-            svg2.append("text")
-                .attr("transform","translate("+ (margin2.left - 100) +","+ (chartHeight2 / 2 + margin2.top) +")")
-                .attr("text-anchor","middle")
-                .attr("dominant-baseline","hanging")
-                .attr("font-size","15px")
-                .attr("font-family","Arial")
-                //.attr("writing-mode","vertical-rl")
-                .text("reviews");
-
-            // // set line generator
-            // var lineGen = d3.line()
-            //     .x( d => priceScale(d['price']) )
-            //     .y( d => reviewScale(d['reviews']) )
-            //     .curve(d3.curveMonotoneX);
-            //
-            //
-            // // Append a <path>, bind the data, and run the generator
-            // chartArea2.append("path")
-            //     .datum(data_priceGroup)
-            //     .attr("class", "line")
-            //     .attr("fill", "none")
-            //     .attr("stroke", "#FF9900")
-            //     .attr("stroke-width", 3)
-            //     .attr("d", lineGen);
-            //
-            //
-            // // add some circles
-            // chartArea2.selectAll("circle").data(data_priceGroup)
-            //     .join("circle")
-            //     .attr("r", 4)
-            //     .attr("fill", "#da810d")
-            //     .attr("cx", d => priceScale2(d['price']) )
-            //     .attr("cy", d => reviewScale(d['reviews']) );
-
-            // draw a legend
-                // let data_sortRate = data;
-                // data_sortRate.sort(function(a, b) {
-                //     return b.UserRating - a.UserRating;
-                // });
-                // console.log(data_sortRate);
-                // let rateValues = [];
-                // for(let i=0; i<data_sortRate.length; i++) {
-                //     rateValues[i] = data_sortRate[i].UserRating;
-                // }
-                // console.log("rate values:");
-                // console.log(rateValues);
-
-               
+        mysvg.append("text")
+            .attr("transform","translate("+ (margin1.left - 70) +","+ (chartHeight1 / 2 + margin1.top) +")rotate(180)")
+            .attr("text-anchor","middle")
+            .attr("dominant-baseline","hanging")
+            .attr("font-size","15px")
+            .attr("font-family","Arial")
+            .attr("writing-mode","vertical-rl")
+            .text("average price");
 
 
-                let quantile = d3.scaleQuantile()
-                    .domain(rateValues)
-                    .range(['#146eb4', '#474747', '#ff9900']);
+        //Use data join some bar
+        chartArea1.selectAll('rect.bar').data(data_ratingGroup)
+            .join('rect').attr('class','bar')
+            .attr("x", d => UserRatingScale(d.UserRating))
+            .attr("y", d => averagePScale(d.price))
+            .attr("height", d=>averagePScale(0)-averagePScale(d.price) )
+            .attr("width", UserRatingScale.bandwidth())
+            .style("fill", "#ff9900");
 
-                annotations2.append("g")
-                    .attr("class", "legendQuant")
-                    .attr("transform","translate("+ (chartWidth2 + margin2.left + 30) +","+ (margin2.top + 70) +")")
-
-                let legend2 = d3.legendColor()
-                    .labelFormat(d3.format(".1f"))
-                    .title("User Ratings")
-                    .titleWidth(100)
-                    .scale(quantile);
-
-                annotations2.select(".legendQuant")
-                    .call(legend2);
-
-
-            // draw circles
-            data_sortRate.forEach( (d, i) => {
-                let circle = chartArea2.append("circle")
-                    .attr("cx", priceScale(d['price']))
-                    .attr("cy", reviewScale(d['reviews']))
-                    .attr("r", 4)
-                    .attr("opacity", 0.8)
-                    .attr("i", i)
-                    .attr("fill", quantile(d['UserRating']));
-            });
-        })
-        </script>
-      
+        //add dot line of average price which exceed avgPrice 11
+        mysvg.append("line")
+            .attr("transform",`translate(${margin1.left-10},${margin1.top})`)
+            .attr("x1", 0)
+            .attr("x2", chartWidth1+10)
+            .attr("y1", averagePScale(avgPrice))
+            .attr("y2", averagePScale(avgPrice))
+            .attr("stroke", "#474747")
+            .attr("stroke-width","3")
+            .attr("stroke-dasharray", "4");
+        mysvg.append("text")
+            .attr("transform",`translate(${margin1.left+500},${margin1.top+averagePScale(avgPrice)})`)
+            .attr("text-anchor","middle")
+            .attr("dominant-baseline","hanging")
+            .attr("font-size","15px")
+            .attr("font-family","Arial")
+            .attr("fill","#474747")
+            .text("avg = $11.1");
+        //add text of the whole number books of the same user rating
+        mysvg.append("text")
+            .attr("transform",`translate(${margin1.left-5},${margin1.top+20})`)
+            .attr("text-anchor","middle")
+            .attr("font-size","20px")
+            .attr("x",30)
+            .attr('y',100)
+            .text(mylist[0]);
+        mysvg.append("text")
+            .attr("transform",`translate(${margin1.left+33},${margin1.top+50})`)
+            .attr("text-anchor","middle")
+            .attr("font-size","20px")
+            .attr("x",30)
+            .attr('y',100)
+            .text(mylist[1]);
+        mysvg.append("text")
+            .attr("transform",`translate(${margin1.left+73},${margin1.top+100})`)
+            .attr("text-anchor","middle")
+            .attr("font-size","20px")
+            .attr("x",30)
+            .attr('y',100)
+            .text(mylist[2]);
+        mysvg.append("text")
+            .attr("transform",`translate(${margin1.left+114},${margin1.top+250})`)
+            .attr("text-anchor","middle")
+            .attr("font-size","20px")
+            .attr("x",30)
+            .attr('y',100)
+            .text(mylist[3]);
+        mysvg.append("text")
+            .attr("transform",`translate(${margin1.left+155},${margin1.top+100})`)
+            .attr("text-anchor","middle")
+            .attr("font-size","20px")
+            .attr("x",30)
+            .attr('y',100)
+            .text(mylist[4]);
+        mysvg.append("text")
+            .attr("transform",`translate(${margin1.left+195},${margin1.top+150})`)
+            .attr("text-anchor","middle")
+            .attr("font-size","20px")
+            .attr("x",30)
+            .attr('y',100)
+            .text(mylist[5]);
+        mysvg.append("text")
+            .attr("transform",`translate(${margin1.left+235},${margin1.top+50})`)
+            .attr("text-anchor","middle")
+            .attr("font-size","20px")
+            .attr("x",30)
+            .attr('y',100)
+            .text(mylist[6]);
+        mysvg.append("text")
+            .attr("transform",`translate(${margin1.left+275},${margin1.top+140})`)
+            .attr("text-anchor","middle")
+            .attr("font-size","20px")
+            .attr("x",30)
+            .attr('y',100)
+            .text(mylist[7]);
+        mysvg.append("text")
+            .attr("transform",`translate(${margin1.left+315},${margin1.top+160})`)
+            .attr("text-anchor","middle")
+            .attr("font-size","20px")
+            .attr("x",30)
+            .attr('y',100)
+            .text(mylist[8]);
+        mysvg.append("text")
+            .attr("transform",`translate(${margin1.left+353},${margin1.top+165})`)
+            .attr("text-anchor","middle")
+            .attr("font-size","20px")
+            .attr("x",30)
+            .attr('y',100)
+            .text(mylist[9]);
+        mysvg.append("text")
+            .attr("transform",`translate(${margin1.left+400},${margin1.top+140})`)
+            .attr("text-anchor","middle")
+            .attr("font-size","20px")
+            .attr("x",30)
+            .attr('y',100)
+            .text(mylist[10]);
 
 
 
-    </body>
+        // plot 3 chart
+
+        const reviewExtent = d3.extent(data, d => d['reviews']);
+        console.log(reviewExtent);
+        const priceScale2 = d3.scaleLinear().domain(priceExtent).range([0, chartWidth2]);
+        const reviewScale = d3.scaleLog().domain(reviewExtent).range([chartHeight2, 0]);
+
+
+        // draw axes
+        let leftAxis2 = d3.axisLeft(reviewScale).ticks(10).tickFormat(d3.format(",d"));
+        annotations2.append("g")
+            .attr("class", "y axis")
+            .attr("transform","translate("+(margin2.left-10)+","+(margin2.top)+")")
+            .call(leftAxis2);
+        let bottomAxis2 = d3.axisBottom(priceScale2).ticks(10).tickFormat(d3.format("$"));
+        annotations2.append("g")
+            .attr("class", "x axis")
+            .attr("transform","translate("+margin2.left+","+(chartHeight2+margin2.top+10)+")")
+            .call(bottomAxis2);
+
+        // draw gridlines
+        let leftGridlines2 = d3.axisLeft(reviewScale).ticks(10)
+            .tickSize(-chartWidth2-20)
+            .tickFormat("");
+        annotations2.append("g").attr("class", "y gridlines")
+            .attr("transform","translate("+ (margin2.left-10) +","+ margin2.top +")")
+            .call(leftGridlines2);
+
+        let bottomGridlines2 = d3.axisBottom(priceScale2).ticks(10)
+            .tickSize(-chartHeight2-10)
+            .tickFormat("");
+        annotations2.append("g").attr("class", "x gridlines")
+            .attr("transform","translate("+ (margin2.left) +","+ (chartHeight2+margin2.top+10) +")")
+            .call(bottomGridlines2);
+
+        // label for axes
+        svg2.append("text")
+            .attr("transform","translate("+ (margin2.left + chartWidth2 / 2) +","+ (chartHeight2 + margin2.top + 35) +")")
+            .attr("text-anchor","middle")
+            .attr("dominant-baseline","hanging")
+            .attr("font-size","15px")
+            .attr("font-family","Arial")
+            .text("price");
+
+        svg2.append("text")
+            .attr("transform","translate("+ (margin2.left - 100) +","+ (chartHeight2 / 2 + margin2.top) +")")
+            .attr("text-anchor","middle")
+            .attr("dominant-baseline","hanging")
+            .attr("font-size","15px")
+            .attr("font-family","Arial")
+            .text("reviews");
+
+
+        // draw legend
+        let quantile = d3.scaleQuantile()
+            .domain(rateValues)
+            .range(['#146eb4', '#474747', '#ff9900']);
+
+        annotations2.append("g")
+            .attr("class", "legendQuant")
+            .attr("transform","translate("+ (chartWidth2 + margin2.left + 30) +","+ (margin2.top + 70) +")")
+
+        let legend2 = d3.legendColor()
+            .labelFormat(d3.format(".1f"))
+            .title("User Ratings")
+            .titleWidth(100)
+            .scale(quantile);
+
+        annotations2.select(".legendQuant")
+            .call(legend2);
+
+
+        // draw circles
+        data.forEach( (d, i) => {
+            chartArea2.append("circle")
+                .attr("cx", priceScale2(d['price']))
+                .attr("cy", reviewScale(d['reviews']))
+                .attr("r", 4)
+                .attr("opacity", 0.8)
+                .attr("i", i)
+                .attr("fill", quantile(d['UserRating']));
+        });
+    })
+</script>
+
+
+
+
+</body>
 </html>
